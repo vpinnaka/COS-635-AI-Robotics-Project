@@ -13,7 +13,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
-        //getSupportActionBar().setCustomView(R.drawable.emily_action_name);
+
         getSupportActionBar().setTitle("EMILY");
     }
 

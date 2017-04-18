@@ -75,7 +75,7 @@ public class FragmentDetails extends Fragment {
 
             contactsModals.add(new Model(Mydata.nameArray[i],Mydata.id_[i],Mydata.drawableArray[i]));
 
-            String m=Mydata.nameArray[i];
+            String m = Mydata.nameArray[i];
 
             System.out.print(m);
 

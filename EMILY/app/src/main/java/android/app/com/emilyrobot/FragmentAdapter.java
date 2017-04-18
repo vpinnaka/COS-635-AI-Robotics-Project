@@ -23,7 +23,7 @@ public class FragmentAdapter extends RecyclerView.Adapter<FragmentAdapter.ViewHo
 
     public FragmentAdapter(Context context,ArrayList<Model> Modals){
         mModals = Modals;
-        ctx=context;
+        ctx = context;
     }
 
 
