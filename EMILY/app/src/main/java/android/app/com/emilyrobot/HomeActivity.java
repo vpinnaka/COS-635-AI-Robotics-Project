@@ -41,37 +41,10 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     stopConnection();
                 }
-
-                //statusMessage.setText("OK");
-                /*
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("IP address");
-
-                // Set up the input
-                final EditText input = new EditText(HomeActivity.this);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ip_address = input.getText().toString();
-                        statusMessage.setText(ip_address);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-                */
             }
         });
+
+        
     }
 
     @Override
