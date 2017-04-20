@@ -7,9 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
+    TextView statusMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,15 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(mtoolbar);
 
         getSupportActionBar().setTitle("EMILY");
+
+        statusMessage = (TextView) findViewById(R.id.statusMessage);
+        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusMessage.setText("OK");
+            }
+        });
     }
 
     @Override

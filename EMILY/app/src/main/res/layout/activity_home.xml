@@ -33,12 +33,12 @@
          />
 
      <ImageButton
+         android:id="@+id/connectButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_gravity="right"
          android:background="?android:attr/selectableItemBackground"
-         android:src="@drawable/disconnected_48"
-         />
+         android:src="@drawable/disconnected_48" />
 
      <Button
          android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
          />
 
      <TextView
-         android:id="@+id/toolbarStatus"
+         android:id="@+id/statusMessage"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_gravity="center"
