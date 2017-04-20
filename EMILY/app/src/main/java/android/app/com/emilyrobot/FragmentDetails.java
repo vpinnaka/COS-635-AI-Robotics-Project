@@ -84,6 +84,10 @@ public class FragmentDetails extends Fragment {
         return contactsModals;
     }
 
+   /* private ArrayList<String> updatedData(){
+        ArrayList<String>
 
+
+    }*/
 
 }
