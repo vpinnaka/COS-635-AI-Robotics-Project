@@ -24,8 +24,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.action_bar,menu);
+        // menuInflater=getMenuInflater();
+        // menuInflater.inflate(R.menu.action_bar,menu);
         /*TextView tv = new TextView(this);
         tv.setText(getString(R.string.app_name)+"  ");
        // tv.setTextColor(getResources().getColor(R.color.colorAccent);
