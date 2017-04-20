@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
     TextView statusMessage;
+    boolean is_connected = false;
     String ip_address = "";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,12 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                showConnectButtonPopupAlert();
+                if (!is_connected) {
+                    showConnectButtonPopupAlert();
+                } else {
+                    stopConnection();
+                }
+
                 //statusMessage.setText("OK");
                 /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -98,8 +104,8 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ip_address = input.getText().toString();
-                statusMessage.setText(ip_address);
+                String result = input.getText().toString();
+                setupConnection(result);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -110,5 +116,20 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    private void setupConnection(String ip) {
+        ip_address = ip;
+        statusMessage.setText(ip);
+        is_connected = true;
+        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+        connectButton.setBackgroundResource(R.drawable.connected_48);
+    }
+
+    private void stopConnection() {
+        is_connected = false;
+        statusMessage.setText("Disconnected");
+        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+        connectButton.setBackgroundResource(R.drawable.disconnected_48);
     }
 }
