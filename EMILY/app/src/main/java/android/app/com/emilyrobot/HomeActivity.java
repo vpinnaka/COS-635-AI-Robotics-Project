@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
     TextView statusMessage;
+    String ip_address = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +32,14 @@ public class HomeActivity extends AppCompatActivity {
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
-            private String m_Text = "";
 
             @Override
             public void onClick(View view) {
-                statusMessage.setText("OK");
-
+                showConnectButtonPopupAlert();
+                //statusMessage.setText("OK");
+                /*
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("Title");
+                builder.setTitle("IP address");
 
                 // Set up the input
                 final EditText input = new EditText(HomeActivity.this);
@@ -50,7 +51,8 @@ public class HomeActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        m_Text = input.getText().toString();
+                        ip_address = input.getText().toString();
+                        statusMessage.setText(ip_address);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -61,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
                 builder.show();
+                */
             }
         });
     }
@@ -79,5 +82,33 @@ public class HomeActivity extends AppCompatActivity {
         //MenuItem add = menu.add(0, findViewById(R.id.statusTextview), 1, R.string.app_name);//(0,findViewById(R.id.statusTextview),1,R.string.app_name)
         //add.setActionView(tv).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);*/
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void showConnectButtonPopupAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("IP address");
+
+        // Set up the input
+        final EditText input = new EditText(HomeActivity.this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ip_address = input.getText().toString();
+                statusMessage.setText(ip_address);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }
