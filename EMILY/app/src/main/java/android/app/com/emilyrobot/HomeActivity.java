@@ -3,6 +3,7 @@ package android.app.com.emilyrobot;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,16 @@ public class HomeActivity extends AppCompatActivity {
     boolean is_connected = false;
     boolean is_display_video = false;
     String ip_address = "";
+    Handler h;
+    int delay;
+    Integer tmp = 0;
+
+    class Evil implements Runnable {
+        public void run() {
+            tmp++;
+            statusMessage.setText(tmp.toString());
+        }
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +78,22 @@ public class HomeActivity extends AppCompatActivity {
 
         //ImageButton settingButton = (ImageButton) findViewById(R.id.settingButton);
         //settingButton.setOnClickListener(openSettingsPage());
+        //Thread t = new Thread(new Evil());
+        //t.setDaemon(true);//success is here now
+        //t.start();
+        //Thread.sleep(1000);
+        h = new Handler();
+        delay = 1000; //milliseconds
+
+        h.postDelayed(new Runnable(){
+            public void run(){
+                tmp++;
+                statusMessage.setText(tmp.toString());
+                Mydata.nameArray[0] = tmp.toString();
+                //do something
+                h.postDelayed(this, delay);
+            }
+        }, delay);
     }
 
     @Override

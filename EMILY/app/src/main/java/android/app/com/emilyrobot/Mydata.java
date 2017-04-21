@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 
 public class Mydata {
-    static String[] nameArray = {"100%", "100%", "100%", "0.00m/s", "0.00m", "0.00m", "0:00"};
+    static String[] nameArray = {"99%", "100%", "100%", "0.00m/s", "0.00m", "0.00m", "0:00"};
 
 
 
