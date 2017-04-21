@@ -26,19 +26,15 @@
          android:layout_gravity="left"
          />
 
-     <Button
+     <ImageButton
+         android:id="@+id/cameraButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Camera"
+         android:layout_marginRight="40dp"
+         android:layout_marginLeft="40dp"
          android:layout_gravity="left"
-         />
-
-     <Button
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="MapView"
-         android:layout_gravity="left"
-         />
+         android:background="?android:attr/selectableItemBackground"
+         android:src="@drawable/camera_48" />
 
      <ImageButton
          android:id="@+id/connectButton"

@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //getSupportActionBar().setTitle("EMILY");
 
