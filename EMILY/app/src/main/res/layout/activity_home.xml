@@ -18,6 +18,14 @@
 
      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+     <ImageView
+         android:id="@+id/imageView"
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         app:srcCompat="@drawable/logo"
+         android:layout_gravity="left"
+         />
+
      <Button
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -90,5 +98,7 @@
      android:name="android.app.com.emilyrobot.FragmentMaps"
      />
 </LinearLayout>
+
+
 
 </LinearLayout>

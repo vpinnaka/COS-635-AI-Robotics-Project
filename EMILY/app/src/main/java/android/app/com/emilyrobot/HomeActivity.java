@@ -28,8 +28,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        getSupportActionBar().setTitle("EMILY");
+        //getSupportActionBar().setTitle("EMILY");
 
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
