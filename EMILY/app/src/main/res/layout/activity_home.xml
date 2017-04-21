@@ -46,10 +46,11 @@
          android:id="@+id/settingButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginRight="40dp"
-         android:layout_marginLeft="40dp"
          android:layout_gravity="right"
+         android:layout_marginLeft="40dp"
+         android:layout_marginRight="40dp"
          android:background="?android:attr/selectableItemBackground"
+         android:onClick="openSettingsPage"
          android:src="@drawable/ic_settings_black_24dp" />
 
      <TextView

@@ -1,6 +1,7 @@
 package android.app.com.emilyrobot;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        
+        //ImageButton settingButton = (ImageButton) findViewById(R.id.settingButton);
+        //settingButton.setOnClickListener(openSettingsPage());
     }
 
     @Override
@@ -104,5 +106,13 @@ public class HomeActivity extends AppCompatActivity {
         statusMessage.setText("Disconnected");
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setBackgroundResource(R.drawable.disconnected_48);
+    }
+
+    public void openSettingsPage(View view) {
+        Intent intent = new Intent(this, SettingActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        String message = "123";
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }
