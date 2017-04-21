@@ -7,9 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * Created by vinay on 4/17/17.
@@ -18,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 public class FragmentMaps extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public static ArrayList<LatLng> publicCor;
 
     public FragmentMaps()
     {
@@ -36,7 +41,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        publicCor=new ArrayList<>();
     }
 
 
@@ -65,5 +70,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //mMap.addMarker(new MarkerOptions().position(publicCor.get(0)).title("Marker"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
     }
 }
