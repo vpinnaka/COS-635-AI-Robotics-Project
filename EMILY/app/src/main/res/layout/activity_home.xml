@@ -18,19 +18,23 @@
 
      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-     <Button
+     <ImageView
+         android:id="@+id/imageView"
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Camera"
+         android:layout_height="match_parent"
+         app:srcCompat="@drawable/logo"
          android:layout_gravity="left"
          />
 
-     <Button
+     <ImageButton
+         android:id="@+id/cameraButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="MapView"
+         android:layout_marginRight="40dp"
+         android:layout_marginLeft="40dp"
          android:layout_gravity="left"
-         />
+         android:background="?android:attr/selectableItemBackground"
+         android:src="@drawable/camera_48" />
 
      <ImageButton
          android:id="@+id/connectButton"
@@ -46,10 +50,11 @@
          android:id="@+id/settingButton"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_marginRight="40dp"
-         android:layout_marginLeft="40dp"
          android:layout_gravity="right"
+         android:layout_marginLeft="40dp"
+         android:layout_marginRight="40dp"
          android:background="?android:attr/selectableItemBackground"
+         android:onClick="openSettingsPage"
          android:src="@drawable/ic_settings_black_24dp" />
 
      <TextView
@@ -87,7 +92,20 @@
      android:id="@+id/fragment_maps"
      android:layout_weight="2"
      android:name="android.app.com.emilyrobot.FragmentMaps"
-     />
+     >
+
+     <ImageView
+         android:id="@+id/cameraDisplay"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:visibility="invisible"
+         app:srcCompat="@drawable/video_placeholder"
+         android:layout_gravity="left"
+         />
+
+  </fragment>
+
 </LinearLayout>
+
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package android.app.com.emilyrobot;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
     TextView statusMessage;
     boolean is_connected = false;
+    boolean is_display_video = false;
     String ip_address = "";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        getSupportActionBar().setTitle("EMILY");
+        //getSupportActionBar().setTitle("EMILY");
 
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
@@ -44,7 +48,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        
+        ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                ImageView cameraDisplay = (ImageView) findViewById(R.id.cameraDisplay);
+                if (is_display_video) {
+                    cameraDisplay.setVisibility(View.INVISIBLE);
+                    is_display_video = false;
+                } else {
+                    cameraDisplay.setVisibility(View.VISIBLE);
+                    is_display_video = true;
+                }
+
+            }
+        });
+
+        //ImageButton settingButton = (ImageButton) findViewById(R.id.settingButton);
+        //settingButton.setOnClickListener(openSettingsPage());
     }
 
     @Override
@@ -104,5 +126,13 @@ public class HomeActivity extends AppCompatActivity {
         statusMessage.setText("Disconnected");
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setBackgroundResource(R.drawable.disconnected_48);
+    }
+
+    public void openSettingsPage(View view) {
+        Intent intent = new Intent(this, SettingActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        String message = "123";
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }
