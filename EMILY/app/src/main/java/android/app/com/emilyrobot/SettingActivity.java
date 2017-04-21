@@ -21,8 +21,17 @@ public class SettingActivity extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         //TextView textView = (TextView) findViewById(R.id.textView);
         //textView.setText(message);
-        Button connectButton = (Button) findViewById(R.id.cancelButton);
-        connectButton.setOnClickListener(new View.OnClickListener() {
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
