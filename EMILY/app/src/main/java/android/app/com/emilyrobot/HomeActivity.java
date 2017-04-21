@@ -25,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     boolean is_display_video = false;
     String ip_address = "";
     Handler h;
-    int delay;
+    //int delay;
     Integer tmp = 0;
 
     class Evil implements Runnable {
@@ -83,17 +83,17 @@ public class HomeActivity extends AppCompatActivity {
         //t.start();
         //Thread.sleep(1000);
         h = new Handler();
-        delay = 1000; //milliseconds
+        //delay = 1000; //milliseconds
 
         h.postDelayed(new Runnable(){
             public void run(){
                 tmp++;
                 statusMessage.setText(tmp.toString());
-                Mydata.nameArray[0] = tmp.toString();
+                Mydata.dataModals.get(0).name = tmp.toString();
                 //do something
-                h.postDelayed(this, delay);
+                h.postDelayed(this, Settings.detail_refresh_rate);
             }
-        }, delay);
+        }, Settings.detail_refresh_rate);
     }
 
     @Override

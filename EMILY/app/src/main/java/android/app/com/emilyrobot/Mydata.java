@@ -18,6 +18,8 @@ public class Mydata {
             };
 
     static Integer[] id_ = {0, 1, 2, 3, 4, 5, 6};
+
+    static ArrayList<Model> dataModals;
     
     private boolean armed;
 
@@ -85,7 +87,7 @@ public class Mydata {
 
     public static ArrayList<Model> generateData() {
 
-        ArrayList<Model> dataModals = new ArrayList<>();
+        dataModals = new ArrayList<>();
 
         for (int i = 0; i < Mydata.nameArray.length; i++) {
 
