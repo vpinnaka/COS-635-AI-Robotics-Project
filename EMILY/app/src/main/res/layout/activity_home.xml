@@ -92,9 +92,20 @@
      android:id="@+id/fragment_maps"
      android:layout_weight="2"
      android:name="android.app.com.emilyrobot.FragmentMaps"
-     />
-</LinearLayout>
+     >
 
+     <ImageView
+         android:id="@+id/cameraDisplay"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:visibility="invisible"
+         app:srcCompat="@drawable/video_placeholder"
+         android:layout_gravity="left"
+         />
+
+  </fragment>
+
+</LinearLayout>
 
 
 </LinearLayout>
