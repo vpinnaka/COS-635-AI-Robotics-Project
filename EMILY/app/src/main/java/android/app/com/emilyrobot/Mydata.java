@@ -87,6 +87,12 @@ public class Mydata {
 
     public static void setBatteryStatus(int value) {
         dataModals.get(0).name = Integer.toString(value) + "%";
+
+        if (value < 20) {
+            dataModals.get(0).image = R.drawable.low_battery;
+        } else {
+            dataModals.get(0).image = R.drawable.battery;
+        }
     }
 
     public static void setWifiStrength(int value) {
