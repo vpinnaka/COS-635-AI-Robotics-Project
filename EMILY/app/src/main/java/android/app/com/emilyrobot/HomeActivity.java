@@ -2,18 +2,13 @@ package android.app.com.emilyrobot;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     //Handler h;
     //int delay;
     //Integer tmp = 0;
-
+    NetworkConnection client;
     //class Evil implements Runnable {
     //    public void run() {
     //        tmp++;
@@ -44,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //getSupportActionBar().setTitle("EMILY");
+
+
 
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
@@ -154,6 +151,8 @@ public class HomeActivity extends AppCompatActivity {
         is_connected = true;
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setBackgroundResource(R.drawable.connected_48);
+        client = new NetworkConnection(ip_address,8005);
+        client.execute();
     }
 
     private void stopConnection() {

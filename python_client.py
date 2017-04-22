@@ -12,7 +12,7 @@ def connectToServer(server_address):
 
 
 if __name__=='__main__':
-    server_address = ('192.168.75.1', 8004)
+    server_address = ('192.168.75.1', 8003)
     sock = connectToServer(server_address)
     while True:    
         try:
@@ -24,7 +24,7 @@ if __name__=='__main__':
             while sock:
                 try:
                     data = sock.recv(2048)            
-                    #print 'received "%s"' % len(data)
+                    print 'received "%s"' % data
                     time.sleep(1)
                 except socket.error, msg:
                         #sys.stderr.write("[ERROR] %s\n" % msg[1])
