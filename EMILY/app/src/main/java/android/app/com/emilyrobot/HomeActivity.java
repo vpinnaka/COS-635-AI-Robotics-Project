@@ -24,16 +24,16 @@ public class HomeActivity extends AppCompatActivity {
     boolean is_connected = false;
     boolean is_display_video = false;
     String ip_address = "";
-    Handler h;
+    //Handler h;
     //int delay;
-    Integer tmp = 0;
+    //Integer tmp = 0;
 
-    class Evil implements Runnable {
-        public void run() {
-            tmp++;
-            statusMessage.setText(tmp.toString());
-        }
-    }
+    //class Evil implements Runnable {
+    //    public void run() {
+    //        tmp++;
+    //        statusMessage.setText(tmp.toString());
+    //    }
+    //}
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        /*
         //ImageButton settingButton = (ImageButton) findViewById(R.id.settingButton);
         //settingButton.setOnClickListener(openSettingsPage());
         //Thread t = new Thread(new Evil());
@@ -88,12 +89,19 @@ public class HomeActivity extends AppCompatActivity {
         h.postDelayed(new Runnable(){
             public void run(){
                 tmp++;
-                statusMessage.setText(tmp.toString());
-                Mydata.dataModals.get(0).name = tmp.toString();
+                //statusMessage.setText(tmp.toString());
+                Mydata.setBatteryStatus(tmp);
+                Mydata.setWifiStrength(tmp);
+                Mydata.setGPSStrength(tmp);
+                Mydata.setSpeed(tmp);
+                Mydata.setDistanceFromHome(tmp);
+                Mydata.setDistanceToNextWaypoint(tmp);
+                Mydata.setElapsedTime(Integer.toString(tmp));
                 //do something
                 h.postDelayed(this, Settings.detail_refresh_rate);
             }
         }, Settings.detail_refresh_rate);
+        */
     }
 
     @Override

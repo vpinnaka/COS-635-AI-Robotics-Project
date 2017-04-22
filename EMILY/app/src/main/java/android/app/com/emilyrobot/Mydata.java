@@ -36,10 +36,10 @@ public class Mydata {
     public void setArmedStatus(boolean armed){
         this.armed = armed;
     }
-    public static void setBatteryStatus(int batteryStatus){
-        nameArray[0] = Integer.toString(batteryStatus)+ "%";
-
-    }
+    //public static void setBatteryStatus(int batteryStatus){
+    //    nameArray[0] = Integer.toString(batteryStatus)+ "%";
+    //
+    //}
 
     public void setWirelessStrength(int wirelessStrength){
         this.wirelessStrength = wirelessStrength;
@@ -84,6 +84,36 @@ public class Mydata {
     public static void setCurrentStatus(String key, Object value){
 
     }
+
+    public static void setBatteryStatus(int value) {
+        dataModals.get(0).name = Integer.toString(value) + "%";
+    }
+
+    public static void setWifiStrength(int value) {
+        dataModals.get(1).name = Integer.toString(value) + "%";
+    }
+
+    public static void setGPSStrength(int value) {
+        dataModals.get(2).name = Integer.toString(value) + "%";
+    }
+
+    public static void setSpeed(float value) {
+        dataModals.get(3).name = String.format(java.util.Locale.US,"%.2f m/s", value);
+    }
+
+    public static void setDistanceFromHome(float value) {
+        dataModals.get(4).name = String.format(java.util.Locale.US,"%.2f m", value);
+    }
+
+    public static void setDistanceToNextWaypoint(float value) {
+        dataModals.get(5).name = String.format(java.util.Locale.US,"%.2f m", value);
+    }
+
+    public static void setElapsedTime(String s) {
+        dataModals.get(6).name = s;
+    }
+
+
 
     public static ArrayList<Model> generateData() {
 

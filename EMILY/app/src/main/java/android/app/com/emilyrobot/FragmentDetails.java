@@ -74,8 +74,7 @@ public class FragmentDetails extends Fragment {
 
         update_handler.postDelayed(new Runnable(){
             public void run(){
-                //currentstatusAdapter.notifyDataSetChanged();
-                currentstatusAdapter.notifyItemChanged(0);
+                currentstatusAdapter.notifyDataSetChanged();
                 //do something
                 update_handler.postDelayed(this, Settings.detail_refresh_rate);
             }
