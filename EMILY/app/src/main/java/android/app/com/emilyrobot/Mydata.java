@@ -86,12 +86,13 @@ public class Mydata {
     }
 
     public static void setBatteryStatus(int value) {
-        dataModals.get(0).name = Integer.toString(value) + "%";
+        Model m = dataModals.get(0);
+        m.name = Integer.toString(value) + "%";
 
-        if (value < 20) {
-            dataModals.get(0).image = R.drawable.low_battery;
+        if (value < Settings.low_battery_threshold) {
+            m.image = R.drawable.low_battery;
         } else {
-            dataModals.get(0).image = R.drawable.battery;
+            m.image = R.drawable.battery;
         }
     }
 
