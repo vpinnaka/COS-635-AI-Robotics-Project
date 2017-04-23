@@ -115,9 +115,13 @@ public class Mydata {
             m.name = Integer.toString(value) + "%";
 
             if (value < Settings.low_battery_threshold) {
+                if (Settings.is_low_battery == false) {
+                    Settings.is_play_low_battery_warning = true;
+                }
+                Settings.is_low_battery = true;
                 m.image = R.drawable.low_battery;
-
             } else {
+                Settings.is_low_battery = false;
                 m.image = R.drawable.battery;
             }
     }

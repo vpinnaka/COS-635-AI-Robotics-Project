@@ -19,19 +19,12 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
     TextView statusMessage;
-    boolean is_connected = false;
-    boolean is_display_video = false;
-    String ip_address = "";
+    //boolean is_connected = false;
+    //boolean is_display_video = false;
+    //String ip_address = "";
     Handler h;
-    //int delay;
-    Integer tmp = 10;
+    Integer tmp = 30;
     NetworkConnection client;
-    //class Evil implements Runnable {
-    //    public void run() {
-    //        tmp++;
-    //        statusMessage.setText(tmp.toString());
-    //    }
-    //}
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +34,6 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //getSupportActionBar().setTitle("EMILY");
-
-
 
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
@@ -51,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if (!is_connected) {
+                if (!Settings.is_connected) {
                     showConnectButtonPopupAlert();
                 } else {
                     stopConnection();
@@ -65,12 +55,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ImageView cameraDisplay = (ImageView) findViewById(R.id.cameraDisplay);
-                if (is_display_video) {
+                if (Settings.is_display_video) {
                     cameraDisplay.setVisibility(View.INVISIBLE);
-                    is_display_video = false;
+                    Settings.is_display_video = false;
                 } else {
                     cameraDisplay.setVisibility(View.VISIBLE);
-                    is_display_video = true;
+                    Settings.is_display_video = true;
                 }
 
             }
@@ -91,8 +81,16 @@ public class HomeActivity extends AppCompatActivity {
                 tmp--;
                 if (tmp < 0) {
                     tmp = 30;
+                }
+                //Mydata.setBatteryStatusForDevelopment(tmp);
 
-                    MediaPlayer mPlayer = MediaPlayer.create(HomeActivity.this, R.raw.low_battery);
+                if (Settings.is_low_battery) {
+                    Settings.status_message = "Warning: Low Battery !!!";
+                }
+
+                if (Settings.is_play_low_battery_warning) {
+                    Settings.is_play_low_battery_warning = false;
+                    MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_battery);
                     mPlayer.start();
                 }
                 //statusMessage.setText(tmp.toString());
@@ -103,7 +101,8 @@ public class HomeActivity extends AppCompatActivity {
                 //Mydata.setDistanceFromHome(tmp);
                 //Mydata.setDistanceToNextWaypoint(tmp);
                 //Mydata.setElapsedTime(Integer.toString(tmp));
-                Mydata.setBatteryStatusForDevelopment(tmp);
+
+                statusMessage.setText(Settings.status_message);
                 //do something
                 h.postDelayed(this, Settings.detail_refresh_rate);
             }
@@ -155,17 +154,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupConnection(String ip) {
-        ip_address = ip;
+        Settings.ip_address = ip;
+        Settings.status_message = ip;
         statusMessage.setText(ip);
-        is_connected = true;
+        Settings.is_connected = true;
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setBackgroundResource(R.drawable.connected_48);
-        client = new NetworkConnection(ip_address,8005);
+        client = new NetworkConnection(Settings.ip_address,8005);
         client.execute();
     }
 
     private void stopConnection() {
-        is_connected = false;
+        Settings.is_connected = false;
+        Settings.status_message = "Disconnected";
         statusMessage.setText("Disconnected");
         ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setBackgroundResource(R.drawable.disconnected_48);
@@ -174,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
     public void openSettingsPage(View view) {
         Intent intent = new Intent(this, SettingActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
-        String message = "123";
+        //String message = "123";
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
