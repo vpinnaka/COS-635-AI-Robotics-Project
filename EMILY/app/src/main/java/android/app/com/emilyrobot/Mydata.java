@@ -1,5 +1,6 @@
 package android.app.com.emilyrobot;
 
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -110,7 +111,19 @@ public class Mydata {
     }
 
     private static void setBatteryStatus(int value) {
-        dataModals.get(0).name = Integer.toString(value) + "%";
+            Model m = dataModals.get(0);
+            m.name = Integer.toString(value) + "%";
+
+            if (value < Settings.low_battery_threshold) {
+                if (Settings.is_low_battery == false) {
+                    Settings.is_play_low_battery_warning = true;
+                }
+                Settings.is_low_battery = true;
+                m.image = R.drawable.low_battery;
+            } else {
+                Settings.is_low_battery = false;
+                m.image = R.drawable.battery;
+            }
     }
 
     private static void setWifiStrength(int value) {
@@ -154,5 +167,9 @@ public class Mydata {
         }
 
         return dataModals;
+    }
+
+    public static void setBatteryStatusForDevelopment(int value) {
+        setBatteryStatus(value);
     }
 }
