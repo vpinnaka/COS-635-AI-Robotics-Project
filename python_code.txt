@@ -1,0 +1,26 @@
+getCurrentData()
+	# cs is current status class gicen by mission planner
+	battary = cs.battery_remaining 
+	wireless = cs.wireless_strength
+	gps = cs.GPSstate
+	dist = cs.wpdist
+	lat = cs.lat
+	log = cs.log
+	elapsed_time = get_theelapsedtime()
+    listofvalues = [battary,wireless ....]
+	
+	return listofvalues
+	
+createHttpserver(port,ip)
+	#here we create http server with given ip and port
+	server server_ # server object created
+	server_.connect(port,ip)
+	if server created
+		while(unitl explicit exit)
+			listvalues = getCurrentData()
+			server_.senddata(listvalues)
+			
+if __name__ = '__main__'
+	ip = #set ip here
+	port = #set port here
+	createHttpserver(port,ip)

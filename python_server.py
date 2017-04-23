@@ -23,7 +23,7 @@ def getCurrentData():
     listofvalues = {}
     # cs is current status class given by mission planner
     listofvalues['armed'] = bool(cs.armed) 
-    listofvalues['battary'] = float(cs.battery_remaining) 
+    listofvalues['battary'] = float(cs.battery_remaining)
     listofvalues['wireless'] = float(cs.linkqualitygcs)
     listofvalues['gps_status'] = float(cs.gpsstatus)
     listofvalues['emily_speed'] = float(cs.groundspeed)

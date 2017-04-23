@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$USER_HOME$/Documents/Dropbox/2017_spring/robotics/COS-635-AI-Robotics-Project/EMILY/EMILY.iml" filepath="$USER_HOME$/Documents/Dropbox/2017_spring/robotics/COS-635-AI-Robotics-Project/EMILY/EMILY.iml" />
-      <module fileurl="file://$PROJECT_DIR$/EmilyRobot.iml" filepath="$PROJECT_DIR$/EmilyRobot.iml" />
       <module fileurl="file://$USER_HOME$/Documents/Dropbox/2017_spring/robotics/COS-635-AI-Robotics-Project/EMILY/app/app.iml" filepath="$USER_HOME$/Documents/Dropbox/2017_spring/robotics/COS-635-AI-Robotics-Project/EMILY/app/app.iml" />
     </modules>
   </component>
