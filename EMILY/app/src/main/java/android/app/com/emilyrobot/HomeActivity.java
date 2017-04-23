@@ -2,12 +2,14 @@ package android.app.com.emilyrobot;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     String ip_address = "";
     Handler h;
     //int delay;
-    Integer tmp = 0;
+    Integer tmp = 10;
     NetworkConnection client;
     //class Evil implements Runnable {
     //    public void run() {
@@ -86,7 +88,13 @@ public class HomeActivity extends AppCompatActivity {
 
         h.postDelayed(new Runnable(){
             public void run(){
-                //tmp++;
+                tmp--;
+                if (tmp < 0) {
+                    tmp = 30;
+
+                    MediaPlayer mPlayer = MediaPlayer.create(HomeActivity.this, R.raw.low_battery);
+                    mPlayer.start();
+                }
                 //statusMessage.setText(tmp.toString());
                 //Mydata.setBatteryStatus(tmp);
                 //Mydata.setWifiStrength(tmp);
@@ -95,11 +103,11 @@ public class HomeActivity extends AppCompatActivity {
                 //Mydata.setDistanceFromHome(tmp);
                 //Mydata.setDistanceToNextWaypoint(tmp);
                 //Mydata.setElapsedTime(Integer.toString(tmp));
+                Mydata.setBatteryStatusForDevelopment(tmp);
                 //do something
                 h.postDelayed(this, Settings.detail_refresh_rate);
             }
         }, Settings.detail_refresh_rate);
-
     }
 
     @Override

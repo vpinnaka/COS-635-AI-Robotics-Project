@@ -1,5 +1,6 @@
 package android.app.com.emilyrobot;
 
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -115,6 +116,7 @@ public class Mydata {
 
             if (value < Settings.low_battery_threshold) {
                 m.image = R.drawable.low_battery;
+
             } else {
                 m.image = R.drawable.battery;
             }
@@ -161,5 +163,9 @@ public class Mydata {
         }
 
         return dataModals;
+    }
+
+    public static void setBatteryStatusForDevelopment(int value) {
+        setBatteryStatus(value);
     }
 }
