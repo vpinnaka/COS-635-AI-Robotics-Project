@@ -1,8 +1,5 @@
 package android.app.com.emilyrobot;
 
-import android.media.MediaPlayer;
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -30,7 +27,7 @@ public class Mydata {
     private static boolean armed;
     private static LatLng EmilyLocation = new LatLng(27.709767,-97.320152);
     private static LatLng HomeLocation = new LatLng(27.709767,-97.320152);
-
+    private static float[] mag_values = new float[3];
 
     private static void setArmedStatus(boolean value){
         armed = value;
@@ -44,6 +41,16 @@ public class Mydata {
 
     public static void setEmilyHomeLocation(float Lat, float Lng){
         HomeLocation = new LatLng(Lat,Lng);
+    }
+
+    private static void setCompassValues(float mx,float my,float mz){
+        mag_values[0] = mx;
+        mag_values[1] = my;
+        mag_values[2] = mz;
+    }
+
+    public static float[] getCompassValues(){
+        return mag_values;
     }
 
     public static boolean getArmedStatus(){
@@ -101,8 +108,21 @@ public class Mydata {
                 JSONObject location = (JSONObject) value;
                 float Lat = Double.valueOf((double)location.get("lat")).floatValue();
                 float Lng = Double.valueOf((double)location.get("lng")).floatValue();
-                Log.i("dist2waypoint", Lat+" ,"+Lng);
-                //setEmilyHomeLocation(Lat,Lng);
+                //Log.i("dist2waypoint", Lat+" ,"+Lng);
+                setEmilyHomeLocation(Lat,Lng);
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if(key.equals("magnetic_compass")){
+            //Log.i("dist2waypoint", value.toString());
+            try {
+                JSONObject location = (JSONObject) value;
+                float mx = Double.valueOf((double)location.get("mx")).floatValue();
+                float my = Double.valueOf((double)location.get("my")).floatValue();
+                float mz = Double.valueOf((double)location.get("mz")).floatValue();
+                //Log.i("dist2waypoint", Lat+" ,"+Lng);
+                setCompassValues(mx,my,mz);
             }catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -111,7 +131,8 @@ public class Mydata {
     }
 
     private static void setBatteryStatus(int value) {
-            Model m = dataModals.get(0);
+        dataModals.get(0).name = Integer.toString(value) + "%";
+		  Model m = dataModals.get(0);
             m.name = Integer.toString(value) + "%";
 
             if (value < Settings.low_battery_threshold) {
@@ -167,9 +188,5 @@ public class Mydata {
         }
 
         return dataModals;
-    }
-
-    public static void setBatteryStatusForDevelopment(int value) {
-        setBatteryStatus(value);
     }
 }

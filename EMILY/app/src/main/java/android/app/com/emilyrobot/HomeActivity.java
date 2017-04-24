@@ -18,14 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
-    TextView statusMessage;
-    //boolean is_connected = false;
-    //boolean is_display_video = false;
-    //String ip_address = "";
+    static TextView statusMessage;
+
     Handler h;
     Integer tmp = 30;
     NetworkConnection client;
-
+    static ImageButton connectButton;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -36,13 +34,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
         statusMessage = (TextView) findViewById(R.id.statusMessage);
-        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+        connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (!Settings.is_connected) {
                     showConnectButtonPopupAlert();
+
                 } else {
                     stopConnection();
                 }
@@ -67,14 +66,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        //ImageButton settingButton = (ImageButton) findViewById(R.id.settingButton);
-        //settingButton.setOnClickListener(openSettingsPage());
-        //Thread t = new Thread(new Evil());
-        //t.setDaemon(true);//success is here now
-        //t.start();
-        //Thread.sleep(1000);
+
         h = new Handler();
-        //delay = 1000; //milliseconds
+
 
         h.postDelayed(new Runnable(){
             public void run(){
@@ -82,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (tmp < 0) {
                     tmp = 30;
                 }
-                //Mydata.setBatteryStatusForDevelopment(tmp);
+
 
                 if (Settings.is_low_battery) {
                     Settings.status_message = "Warning: Low Battery !!!";
@@ -93,44 +87,28 @@ public class HomeActivity extends AppCompatActivity {
                     MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_battery);
                     mPlayer.start();
                 }
-                //statusMessage.setText(tmp.toString());
-                //Mydata.setBatteryStatus(tmp);
-                //Mydata.setWifiStrength(tmp);
-                //Mydata.setGPSStrength(tmp);
-                //Mydata.setSpeed(tmp);
-                //Mydata.setDistanceFromHome(tmp);
-                //Mydata.setDistanceToNextWaypoint(tmp);
-                //Mydata.setElapsedTime(Integer.toString(tmp));
 
                 statusMessage.setText(Settings.status_message);
                 //do something
                 h.postDelayed(this, Settings.detail_refresh_rate);
+
             }
         }, Settings.detail_refresh_rate);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // menuInflater=getMenuInflater();
-        // menuInflater.inflate(R.menu.action_bar,menu);
-        /*TextView tv = new TextView(this);
-        tv.setText(getString(R.string.app_name)+"  ");
-       // tv.setTextColor(getResources().getColor(R.color.colorAccent);
-        //tv.setOnClickListener(t);
-        tv.setPadding(5, 0, 5, 0);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setTextSize(14);
-        //MenuItem add = menu.add(0, findViewById(R.id.statusTextview), 1, R.string.app_name);//(0,findViewById(R.id.statusTextview),1,R.string.app_name)
-        //add.setActionView(tv).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);*/
+
         return super.onCreateOptionsMenu(menu);
     }
 
     private void showConnectButtonPopupAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setTitle("IP address");
+        builder.setTitle("IP address:Port number");
 
         // Set up the input
         final EditText input = new EditText(HomeActivity.this);
+        input.setText(Settings.ip_address+":"+Settings.port_number);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -139,8 +117,11 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String result = input.getText().toString();
-                setupConnection(result);
+                String result[] = input.getText().toString().split(":");
+                String ip_address = result[0];
+                int port = Integer.parseInt(result[1]);
+                Log.i("ip:port",ip_address+","+port);
+                setupConnection(ip_address,port);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -153,30 +134,30 @@ public class HomeActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void setupConnection(String ip) {
+    private void setupConnection(String ip, int port) {
         Settings.ip_address = ip;
+        Settings.port_number = port;
         Settings.status_message = ip;
         statusMessage.setText(ip);
         Settings.is_connected = true;
-        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+
         connectButton.setBackgroundResource(R.drawable.connected_48);
-        client = new NetworkConnection(Settings.ip_address,8005);
+
+        client = new NetworkConnection(Settings.ip_address,Settings.port_number);
         client.execute();
     }
 
-    private void stopConnection() {
+    public static void stopConnection() {
         Settings.is_connected = false;
         Settings.status_message = "Disconnected";
         statusMessage.setText("Disconnected");
-        ImageButton connectButton = (ImageButton) findViewById(R.id.connectButton);
+
         connectButton.setBackgroundResource(R.drawable.disconnected_48);
     }
 
     public void openSettingsPage(View view) {
         Intent intent = new Intent(this, SettingActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.editText);
-        //String message = "123";
-        //intent.putExtra(EXTRA_MESSAGE, message);
+
         startActivity(intent);
     }
 }

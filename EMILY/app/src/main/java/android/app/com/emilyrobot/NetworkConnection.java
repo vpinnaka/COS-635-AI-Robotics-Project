@@ -50,18 +50,10 @@ public class NetworkConnection extends AsyncTask<Void, Void, Void> {
                    Mydata.setCurrentStatus(key, value);
 
 
-                   //if(key.equals("battary"))
-                       //Log.i("battary",value.toString());
-                        //Mydata.setBatteryStatus((int)value);
                } catch (JSONException e) {
                    e.printStackTrace();
                }
            }
-
-
-            //Boolean armed = jsonData.getBoolean("armed");
-
-            //Mydata.setBatteryStatus(jsonData.getInt("battary"));
 
 
 
@@ -71,6 +63,7 @@ public class NetworkConnection extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
+        Settings.is_connected = false;
         super.onPostExecute(aVoid);
     }
 
@@ -93,11 +86,11 @@ public class NetworkConnection extends AsyncTask<Void, Void, Void> {
 			/*
              * notice: inputStream.read() will block if no data return
 			 */
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
+            while (((bytesRead = inputStream.read(buffer)) != -1) && Settings.is_connected) {
 
                 try {
                     JSONObject jsonData = convertStringToJson(new String(buffer));
-
+                    //Log.i("Jsondata",jsonData.toString());
                     parseJSONdata(jsonData);
 
                 } catch (JSONException e) {
@@ -117,6 +110,7 @@ public class NetworkConnection extends AsyncTask<Void, Void, Void> {
             if (socket != null) {
                 try {
                     socket.close();
+                    HomeActivity.stopConnection();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

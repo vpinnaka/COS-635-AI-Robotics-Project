@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,19 +30,18 @@ import java.util.Random;
 public class FragmentMaps extends Fragment implements OnMapReadyCallback {
 
     static GoogleMap mMap;
-    static ArrayList<LatLng> coordinations;
-    static ArrayList<LatLng> waypoints;
+    public static ArrayList<LatLng> coordinations=new ArrayList<>();
+    public static ArrayList<LatLng> waypoints=new ArrayList<>();
     static Random rand=new Random();
-    public static Handler mHandler;
-    static PolylineOptions poption;
-    static ArrayList<Polyline> polylines;
-    CircleOptions circle;
-    public static long started,ended;
+    static Handler mHandler=new Handler();
+    static ArrayList<Polyline> polylines=new ArrayList<>();
+    CircleOptions circle=new CircleOptions();;
+    static Circle circleList;
+    //public static long started,ended;
+
     public FragmentMaps()
     {
-
     }
-
 
     public static FragmentMaps newInstance() {
         FragmentMaps fragment = new FragmentMaps();
@@ -50,49 +50,45 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         return fragment;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        coordinations=new ArrayList<>();
-        waypoints=new ArrayList<>();
-        //coordinations.add(new LatLng(27.710527, -97.318175));
-        //coordinations.add(new LatLng(27.708407, -97.319783));
-        waypoints.add(new LatLng(27.710527, -97.318175));
-        waypoints.add(new LatLng(27.708407, -97.319783));
-        mHandler=new Handler();
-        polylines=new ArrayList<>();
-        poption= new PolylineOptions();
-        circle=new CircleOptions();
-
-
     }
-    public static Runnable mTask =new Runnable() {
+
+    ////For creating list of coordinaiton of EMILY for Simulation
+    public static Runnable mCoorRandom =new Runnable() {
         @Override
 
         public void run() {
             try{
                 randomCreateArraylist(coordinations);
-                trackingCor(coordinations,poption,mMap);
             }finally {
-                if(System.currentTimeMillis()<ended) {
-                    mHandler.postDelayed(mTask, 2000);
-                }else{
-                    mHandler.removeCallbacks(mTask);
-                    lineRemove();
-                }
-
+                mHandler.postDelayed(mCoorRandom, 1000); //repeate every 1 second
             }
         }
     };
 
+    ///FOR update track and waypoint every second
+    public Runnable mTask =new Runnable() {
+        @Override
+
+        public void run() {
+            try{
+                //drawCircle(waypoints);
+                coordinations.add(Mydata.getEmilyLocation());
+                trackingCor(coordinations,mMap);
+                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
+            }finally {
+                mHandler.postDelayed(mTask, 1000); //repeate every 1 second
+            }
+        }
+    };
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(mTask);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,67 +97,64 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         return  v;
-
-
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        //mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyLocation()).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("Marker"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
-        //drawCircle(waypoints);
         mTask.run();
-        //Log.i("Latitude",Double.toString(coordinations.get(coordinations.size()-1).latitude));
-        //Log.i("Longitude",Double.toString(coordinations.get(coordinations.size()-1).longitude));
 
     }
+
+    //Draw Waypoint coordination
     public void drawCircle(ArrayList<LatLng> cor){
+        circleRemove();
         for(int i=0;i<cor.size();i++){
-            mMap.addCircle(circle.center(cor.get(i)).radius(5).strokeColor(Color.RED).fillColor(Color.RED));
+            circleList=mMap.addCircle(circle.center(cor.get(i)).radius(5).strokeColor(Color.RED).fillColor(Color.RED));
         }
     }
-    static void trackingCor(ArrayList<LatLng> cor, PolylineOptions line, GoogleMap map){
-        if(cor.size()>2) {
-            line.add(cor.get(cor.size() - 1));
-            line.add(cor.get(cor.size() - 2));
-            line.width(5).color(Color.WHITE).geodesic(true);
-            //polylines.add(map.addPolyline(line));
 
-            Polyline l=map.addPolyline(line);
-            polylines.add(l);
+    //Draw line to track EMILY
+    static void trackingCor(ArrayList<LatLng> cor, GoogleMap map){
+        //lineRemove();
+        if(cor.size()>=2) {
+            for(int i=0;i<cor.size()-1;i++) {
+                polylines.add(map.addPolyline(new PolylineOptions().add(cor.get(i),cor.get(i+1)).width(5).color(Color.WHITE).geodesic(true)));
+            }
 
         }
     }
+
+    //remove all the line on the map
     public static void lineRemove(){
         for(Polyline line:polylines){
             line.remove();
         }
         polylines.clear();
     }
-    static void randomCreateArraylist(ArrayList<LatLng> a){
+    public static void circleRemove(){
+        if(circleList != null) circleList.remove();
+    }
 
-        int size=a.size();
-        if(size==0) a.add(new LatLng(27.710527, -97.318175));
+    //create list of coordination for simulation
+    public static void randomCreateArraylist(ArrayList<LatLng> a){
+
+        if(a.size() ==0) a.add(new LatLng(27.710527, -97.318175));
         LatLng c;
-        double randomNum= 0.001*rand.nextDouble();
+        double randomNum= 0.0001*rand.nextDouble();
         double c1=a.get(a.size()-1).latitude+randomNum;
-        double c2=a.get(a.size()-1).longitude+randomNum;
+        double c2=a.get(a.size()-1).longitude-randomNum;
         c=new LatLng(c1,c2);
         a.add(c);
-        //Log.i("Lat",Double.toString(a.get(a.size()-1).latitude));
-        //Log.i("Longitude",Double.toString(a.get(a.size()-1).longitude));
-
     }
 
 }

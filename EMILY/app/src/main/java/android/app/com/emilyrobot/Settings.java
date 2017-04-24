@@ -13,7 +13,8 @@ public class Settings {
     static boolean is_low_battery = false;
     static boolean is_connected = false;
     static boolean is_display_video = false;
-    static String ip_address = "";
+    static String ip_address = "192.168.75.1";
+    static int port_number = 8000;
     static String status_message = "Disconnected";
 
     static boolean is_play_low_battery_warning = false;
