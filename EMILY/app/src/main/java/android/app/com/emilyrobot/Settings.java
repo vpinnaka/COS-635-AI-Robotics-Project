@@ -18,4 +18,5 @@ public class Settings {
     static String status_message = "Disconnected";
 
     static boolean is_play_low_battery_warning = false;
+    static boolean is_play_low_wifi_warning = false;
 }

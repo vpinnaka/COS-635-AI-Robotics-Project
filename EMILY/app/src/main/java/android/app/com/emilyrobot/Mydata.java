@@ -149,10 +149,18 @@ public class Mydata {
 
     private static void setWifiStrength(int value) {
         dataModals.get(1).name = Integer.toString(value) + "%";
+
+        if (value < Settings.low_wifi_threshold) {
+                Settings.is_play_low_wifi_warning = true;
+        }
     }
 
     private static void setGPSStrength(int value) {
-        dataModals.get(2).name = Integer.toString(value) + "%";
+
+        if(value == 3)
+            dataModals.get(2).name = "3D Fix";
+        else if(value == 1)
+            dataModals.get(2).name = "No Fix";
     }
 
     private static void setSpeed(float value) {

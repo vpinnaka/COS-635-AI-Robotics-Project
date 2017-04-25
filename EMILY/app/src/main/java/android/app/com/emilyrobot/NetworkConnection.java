@@ -110,7 +110,7 @@ public class NetworkConnection extends AsyncTask<Void, Void, Void> {
             if (socket != null) {
                 try {
                     socket.close();
-                    HomeActivity.stopConnection();
+                    Settings.is_connected = false;
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

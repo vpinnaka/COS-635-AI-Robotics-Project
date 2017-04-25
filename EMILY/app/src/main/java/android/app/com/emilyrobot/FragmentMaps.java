@@ -1,6 +1,7 @@
 package android.app.com.emilyrobot;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -37,7 +39,10 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
     static ArrayList<Polyline> polylines=new ArrayList<>();
     CircleOptions circle=new CircleOptions();;
     static Circle circleList;
-    //public static long started,ended;
+    static MarkerOptions mEmily=new MarkerOptions();
+    static Location L1=new Location("starting");
+    static Location L2=new Location("destination");
+    static int bearing;
 
     public FragmentMaps()
     {
@@ -76,6 +81,17 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
             try{
                 //drawCircle(waypoints);
                 coordinations.add(Mydata.getEmilyLocation());
+                mMap.clear();
+                mEmily.position(coordinations.get(coordinations.size()-1));
+                if(coordinations.size()>=2){
+                    L1.setLatitude(coordinations.get(coordinations.size()-2).latitude);
+                    L1.setLongitude(coordinations.get(coordinations.size()-2).longitude);
+                    L2.setLatitude(coordinations.get(coordinations.size()-1).latitude);
+                    L2.setLongitude(coordinations.get(coordinations.size()-1).longitude);
+                    bearing= (int) L1.bearingTo(L2);
+                    mEmily.rotation(bearing);
+                }
+                mMap.addMarker(mEmily.position(coordinations.get(coordinations.size()-1)));
                 trackingCor(coordinations,mMap);
                 //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
             }finally {
@@ -107,9 +123,10 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mEmily.icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow));
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("EMILY"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
         mTask.run();
 
@@ -128,7 +145,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         //lineRemove();
         if(cor.size()>=2) {
             for(int i=0;i<cor.size()-1;i++) {
-                polylines.add(map.addPolyline(new PolylineOptions().add(cor.get(i),cor.get(i+1)).width(5).color(Color.WHITE).geodesic(true)));
+                polylines.add(map.addPolyline(new PolylineOptions().add(cor.get(i),cor.get(i+1)).width(10).color(Color.WHITE).geodesic(true)));
             }
 
         }

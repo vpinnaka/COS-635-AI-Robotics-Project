@@ -18,12 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
-    static TextView statusMessage;
+    TextView statusMessage;
 
     Handler h;
     Integer tmp = 30;
     NetworkConnection client;
-    static ImageButton connectButton;
+    ImageButton connectButton;
+    MediaPlayer mPlayer;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -32,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
+        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_battery);
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         connectButton = (ImageButton) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +85,23 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (Settings.is_play_low_battery_warning) {
                     Settings.is_play_low_battery_warning = false;
-                    MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_battery);
+
                     mPlayer.start();
                 }
 
+
+                if (Settings.is_play_low_wifi_warning) {
+                    Settings.is_play_low_wifi_warning = false;
+
+                if(!mPlayer.isPlaying())
+                    mPlayer.start();
+                }else{
+                    if(mPlayer.isPlaying())
+                        mPlayer.stop();
+                }
+
+                if(!Settings.is_connected)
+                    stopConnection();
                 statusMessage.setText(Settings.status_message);
                 //do something
                 h.postDelayed(this, Settings.detail_refresh_rate);
@@ -147,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
         client.execute();
     }
 
-    public static void stopConnection() {
+    public void stopConnection() {
         Settings.is_connected = false;
         Settings.status_message = "Disconnected";
         statusMessage.setText("Disconnected");
