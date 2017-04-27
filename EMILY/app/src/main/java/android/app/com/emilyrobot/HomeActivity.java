@@ -77,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (tmp < 0) {
                     tmp = 30;
                 }
+                //Mydata.setBatteryStatusForDev(tmp);
 
 
                 if (Settings.is_low_battery) {

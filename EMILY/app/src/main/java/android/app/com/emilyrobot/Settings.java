@@ -14,6 +14,7 @@ public class Settings {
     static boolean is_connected = false;
     static boolean is_display_video = false;
     static String ip_address = "192.168.75.1";
+    static String camera_ip_address = "0.0.0.0";
     static int port_number = 8000;
     static String status_message = "Disconnected";
 
