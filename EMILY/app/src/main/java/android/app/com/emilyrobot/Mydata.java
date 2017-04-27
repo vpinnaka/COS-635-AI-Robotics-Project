@@ -25,12 +25,20 @@ public class Mydata {
     static ArrayList<Model> dataModals;
     
     private static boolean armed;
-    private static LatLng EmilyLocation = new LatLng(27.709767,-97.320152);
-    private static LatLng HomeLocation = new LatLng(27.709767,-97.320152);
+    private static long startTime = 0;
+    private static int gpsStatus;
+    private static LatLng EmilyLocation = new LatLng(0,0);
+    private static LatLng HomeLocation = new LatLng(0,0);
     private static float[] mag_values = new float[3];
 
     private static void setArmedStatus(boolean value){
         armed = value;
+        if(armed && startTime == 0){
+            startTime = System.currentTimeMillis();
+
+        }else if(!armed){
+            startTime = 0;
+        }
     }
 
 
@@ -67,8 +75,16 @@ public class Mydata {
 
     public static void setCurrentStatus(String key, Object value){
 
-        if(key.equals("armed"))
-            setArmedStatus(Boolean.valueOf((boolean)value));
+        if(key.equals("armed")) {
+            setArmedStatus(Boolean.valueOf((boolean) value));
+            if(startTime != 0){
+                int elapsedtime = Double.valueOf((System.currentTimeMillis() - startTime)/ 1000.0).intValue();
+                String time = elapsedtime/60 +":"+elapsedtime%60;
+                setElapsedTime(time);
+            }else{
+                setElapsedTime("0:00");
+            }
+        }
         if(key.equals("battary"))
             setBatteryStatus(Double.valueOf((double)value).intValue());
         if(key.equals("wireless")){
@@ -84,19 +100,21 @@ public class Mydata {
             setSpeed(Double.valueOf((double)value).floatValue());
         }if(key.equals("dist2home")){
             //Log.i("dist2home", value.toString());
-            setDistanceFromHome(Double.valueOf((double)value).floatValue());
+            setDistanceFromHome(Double.valueOf((double)value).intValue());
         }
         if(key.equals("dist2waypoint")){
             //Log.i("dist2waypoint", value.toString());
-            setDistanceToNextWaypoint(Double.valueOf((double)value).floatValue());
+            setDistanceToNextWaypoint(Double.valueOf((double)value).intValue());
         }
         if(key.equals("emily_location")){
             //Log.i("dist2waypoint", value.toString());
             try {
                 JSONObject location = (JSONObject) value;
-                float Lat = Double.valueOf((double)location.get("lat")).floatValue();
-                float Lng = Double.valueOf((double)location.get("lng")).floatValue();
-                setEmilyLocation(Lat,Lng);
+                if(gpsStatus != 1) {
+                    float Lat = Double.valueOf((double) location.get("lat")).floatValue();
+                    float Lng = Double.valueOf((double) location.get("lng")).floatValue();
+                    setEmilyLocation(Lat, Lng);
+                }
             }catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -106,10 +124,13 @@ public class Mydata {
             //Log.i("dist2waypoint", value.toString());
             try {
                 JSONObject location = (JSONObject) value;
-                float Lat = Double.valueOf((double)location.get("lat")).floatValue();
-                float Lng = Double.valueOf((double)location.get("lng")).floatValue();
+                if(gpsStatus != 1) {
+                    float Lat = Double.valueOf((double) location.get("lat")).floatValue();
+                    float Lng = Double.valueOf((double) location.get("lng")).floatValue();
+                    setEmilyHomeLocation(Lat,Lng);
+                }
                 //Log.i("dist2waypoint", Lat+" ,"+Lng);
-                setEmilyHomeLocation(Lat,Lng);
+
             }catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -156,7 +177,7 @@ public class Mydata {
     }
 
     private static void setGPSStrength(int value) {
-
+        gpsStatus = value;
         if(value == 3)
             dataModals.get(2).name = "3D Fix";
         else if(value == 1)
@@ -167,15 +188,16 @@ public class Mydata {
         dataModals.get(3).name = String.format(java.util.Locale.US,"%.2f m/s", value);
     }
 
-    private static void setDistanceFromHome(float value) {
-        dataModals.get(4).name = String.format(java.util.Locale.US,"%.2f m", value);
+    private static void setDistanceFromHome(int value) {
+        dataModals.get(4).name = String.format(java.util.Locale.US,"%d m", value);
     }
 
-    private static void setDistanceToNextWaypoint(float value) {
-        dataModals.get(5).name = String.format(java.util.Locale.US,"%.2f m", value);
+    private static void setDistanceToNextWaypoint(int value) {
+        dataModals.get(5).name = String.format(java.util.Locale.US,"%d m", value);
     }
 
     private static void setElapsedTime(String s) {
+
         dataModals.get(6).name = s;
     }
 

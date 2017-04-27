@@ -11,10 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -24,18 +25,32 @@ public class HomeActivity extends AppCompatActivity {
     Integer tmp = 30;
     NetworkConnection client;
     ImageButton connectButton;
+    ImageButton cameraButton;
     MediaPlayer mPlayer;
+    SurfaceView cameraDisplay;
+
+    private SurfaceView cameraPreview;
+
+    private static final boolean useHttpCamera = false;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_home);
 
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_battery);
+        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.low_wifi);
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         connectButton = (ImageButton) findViewById(R.id.connectButton);
+        cameraButton = (ImageButton) findViewById(R.id.cameraButton);
+
+
         connectButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -49,14 +64,29 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
+        if (useHttpCamera) {
+
+            cameraDisplay = new HttpCameraPreview(this,300, 300);
+
+        }else{
+            cameraDisplay = (SurfaceView) findViewById(R.id.cameraview);
+        }
+
+
+
+
         cameraButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                ImageView cameraDisplay = (ImageView) findViewById(R.id.cameraDisplay);
+
+
+
                 if (Settings.is_display_video) {
+
                     cameraDisplay.setVisibility(View.INVISIBLE);
+
+
                     Settings.is_display_video = false;
                 } else {
                     cameraDisplay.setVisibility(View.VISIBLE);
@@ -108,6 +138,8 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         }, Settings.detail_refresh_rate);
+
+
     }
 
     @Override

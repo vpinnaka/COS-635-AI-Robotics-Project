@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -43,6 +44,10 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
     static Location L1=new Location("starting");
     static Location L2=new Location("destination");
     static int bearing;
+    Marker HomeLocation;
+    boolean animateToHome = true;
+
+    static int zoom = 0;
 
     public FragmentMaps()
     {
@@ -60,18 +65,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
     }
 
-    ////For creating list of coordinaiton of EMILY for Simulation
-    public static Runnable mCoorRandom =new Runnable() {
-        @Override
 
-        public void run() {
-            try{
-                randomCreateArraylist(coordinations);
-            }finally {
-                mHandler.postDelayed(mCoorRandom, 1000); //repeate every 1 second
-            }
-        }
-    };
 
     ///FOR update track and waypoint every second
     public Runnable mTask =new Runnable() {
@@ -80,23 +74,41 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         public void run() {
             try{
                 //drawCircle(waypoints);
-                coordinations.add(Mydata.getEmilyLocation());
-                mMap.clear();
-                mEmily.position(coordinations.get(coordinations.size()-1));
-                if(coordinations.size()>=2){
-                    L1.setLatitude(coordinations.get(coordinations.size()-2).latitude);
-                    L1.setLongitude(coordinations.get(coordinations.size()-2).longitude);
-                    L2.setLatitude(coordinations.get(coordinations.size()-1).latitude);
-                    L2.setLongitude(coordinations.get(coordinations.size()-1).longitude);
-                    bearing= (int) L1.bearingTo(L2);
-                    mEmily.rotation(bearing);
+                if(Settings.is_connected){
+                    //HomeLocation.remove();
+
+                    //HomeLocation.setPosition(Mydata.getEmilyHomeLocation());
+
+
+                    mMap.clear();
+                    //mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("HOME"));
+                    coordinations.add(Mydata.getEmilyLocation());
+                    if(animateToHome){
+                        animateToHome = false;
+
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),zoom));
+                    }
+
+                    mEmily.position(coordinations.get(coordinations.size()-1));
+                    if(coordinations.size()>=2){
+                        L1.setLatitude(coordinations.get(coordinations.size()-2).latitude);
+                        L1.setLongitude(coordinations.get(coordinations.size()-2).longitude);
+                        L2.setLatitude(coordinations.get(coordinations.size()-1).latitude);
+                        L2.setLongitude(coordinations.get(coordinations.size()-1).longitude);
+                        bearing= (int) L1.bearingTo(L2);
+                        mEmily.rotation(bearing);
+                    }
+                    mMap.addMarker(mEmily.position(coordinations.get(coordinations.size()-1)));
+                    trackingCor(coordinations,mMap);
+                    //
+                }else{
+                    animateToHome = true;
+                    lineRemove();
                 }
-                mMap.addMarker(mEmily.position(coordinations.get(coordinations.size()-1)));
-                trackingCor(coordinations,mMap);
-                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
             }finally {
                 mHandler.postDelayed(mTask, 1000); //repeate every 1 second
             }
+
         }
     };
 
@@ -126,8 +138,12 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         mEmily.icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow));
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("EMILY"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),17));
+       // HomeLocation.setPosition(Mydata.getEmilyHomeLocation());
+       // HomeLocation.setTitle("Home");
+        //HomeLocation.
+        HomeLocation = mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("HOME"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),0));
+        zoom = 17;
         mTask.run();
 
     }
@@ -158,20 +174,11 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         }
         polylines.clear();
     }
+
     public static void circleRemove(){
         if(circleList != null) circleList.remove();
     }
 
-    //create list of coordination for simulation
-    public static void randomCreateArraylist(ArrayList<LatLng> a){
 
-        if(a.size() ==0) a.add(new LatLng(27.710527, -97.318175));
-        LatLng c;
-        double randomNum= 0.0001*rand.nextDouble();
-        double c1=a.get(a.size()-1).latitude+randomNum;
-        double c2=a.get(a.size()-1).longitude-randomNum;
-        c=new LatLng(c1,c2);
-        a.add(c);
-    }
 
 }

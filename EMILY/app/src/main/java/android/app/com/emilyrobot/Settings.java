@@ -6,7 +6,7 @@ package android.app.com.emilyrobot;
 
 public class Settings {
     static int detail_refresh_rate = 1000;
-
+    static String cameraurl = "http://192.168.204.19:4747/mjpegfeed?640x480";
     static int low_battery_threshold = 20;
     static int low_wifi_threshold = 20;
     static int low_gps_threshold = 20;
