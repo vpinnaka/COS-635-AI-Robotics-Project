@@ -156,7 +156,7 @@ public class Mydata {
 		  Model m = dataModals.get(0);
             m.name = Integer.toString(value) + "%";
 
-            if (value < Settings.low_battery_threshold) {
+            if (value <= Settings.low_battery_threshold) {
                 if (Settings.is_low_battery == false) {
                     Settings.is_play_low_battery_warning = true;
                 }
@@ -218,5 +218,9 @@ public class Mydata {
         }
 
         return dataModals;
+    }
+
+    public static void setBatteryStatusForDev(int value) {
+        setBatteryStatus(value);
     }
 }
