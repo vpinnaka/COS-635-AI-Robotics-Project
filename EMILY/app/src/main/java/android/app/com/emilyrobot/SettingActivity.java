@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -35,12 +36,34 @@ public class SettingActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                saveSettings();
                 finish();
             }
         });
+
+        TextView cameraIpAddress = (TextView) findViewById(R.id.cameraIpAddress);
+        cameraIpAddress.setText(Settings.camera_ip_address);
+
+        TextView batteryThreshold = (TextView) findViewById(R.id.batteryThreshold);
+        batteryThreshold.setText(Integer.toString(Settings.low_battery_threshold));
+
+        TextView wifiThreshold = (TextView) findViewById(R.id.wifiThreshold);
+        wifiThreshold.setText(Integer.toString(Settings.low_wifi_threshold));
+
     }
 
     private void leaveSetting() {
         //onBackPressed();
+    }
+
+    private void saveSettings() {
+        TextView cameraIpAddress = (TextView) findViewById(R.id.cameraIpAddress);
+        Settings.camera_ip_address = cameraIpAddress.getText().toString();
+
+        TextView batteryThreshold = (TextView) findViewById(R.id.batteryThreshold);
+        Settings.low_battery_threshold = Integer.parseInt(batteryThreshold.getText().toString());
+
+        TextView wifiThreshold = (TextView) findViewById(R.id.wifiThreshold);
+        Settings.low_wifi_threshold = Integer.parseInt(wifiThreshold.getText().toString());
     }
 }
