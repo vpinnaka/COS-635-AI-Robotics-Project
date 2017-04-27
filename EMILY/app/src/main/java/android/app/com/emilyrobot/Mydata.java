@@ -197,4 +197,8 @@ public class Mydata {
 
         return dataModals;
     }
+
+    public static void setBatteryStatusForDev(int value) {
+        setBatteryStatus(value);
+    }
 }
