@@ -156,7 +156,7 @@ public class Mydata {
 		  Model m = dataModals.get(0);
             m.name = Integer.toString(value) + "%";
 
-            if (value <= Settings.low_battery_threshold) {
+            if (value < Settings.low_battery_threshold) {
                 if (Settings.is_low_battery == false) {
                     Settings.is_play_low_battery_warning = true;
                 }
@@ -170,6 +170,21 @@ public class Mydata {
 
     private static void setWifiStrength(int value) {
         dataModals.get(1).name = Integer.toString(value) + "%";
+        if(value > 90){
+            dataModals.get(1).image = R.drawable.signal100;
+        }
+        else if(value > 75){
+            dataModals.get(1).image = R.drawable.signal75;
+        }
+        else if(value > 50){
+            dataModals.get(1).image = R.drawable.signal50;
+        }
+        else if(value > 25){
+            dataModals.get(1).image = R.drawable.signal25;
+        }
+        else{
+            dataModals.get(1).image = R.drawable.signal0;
+        }
 
         if (value < Settings.low_wifi_threshold) {
                 Settings.is_play_low_wifi_warning = true;
@@ -178,10 +193,15 @@ public class Mydata {
 
     private static void setGPSStrength(int value) {
         gpsStatus = value;
-        if(value == 3)
-            dataModals.get(2).name = "3D Fix";
-        else if(value == 1)
+        if(value == 1) {
             dataModals.get(2).name = "No Fix";
+        }
+        else if(value == 0) {
+            dataModals.get(2).name = "No Gps";
+        }
+        else{
+            dataModals.get(2).name = "3D Fix";
+        }
     }
 
     private static void setSpeed(float value) {
@@ -218,9 +238,5 @@ public class Mydata {
         }
 
         return dataModals;
-    }
-
-    public static void setBatteryStatusForDev(int value) {
-        setBatteryStatus(value);
     }
 }

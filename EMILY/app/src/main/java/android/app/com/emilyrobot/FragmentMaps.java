@@ -82,14 +82,15 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
 
                     mMap.clear();
                     //mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("HOME"));
-                    coordinations.add(Mydata.getEmilyLocation());
-                    if(animateToHome){
-                        animateToHome = false;
+                    if(Mydata.getEmilyLocation().latitude !=0 || Mydata.getEmilyLocation().longitude !=0)
+                        coordinations.add(Mydata.getEmilyLocation());
+                    //if(animateToHome){
+                        //animateToHome = false;
 
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),zoom));
-                    }
-
-                    mEmily.position(coordinations.get(coordinations.size()-1));
+                    //}
+                    if(coordinations.size() > 1)
+                        mEmily.position(coordinations.get(coordinations.size()-1));
                     if(coordinations.size()>=2){
                         L1.setLatitude(coordinations.get(coordinations.size()-2).latitude);
                         L1.setLongitude(coordinations.get(coordinations.size()-2).longitude);
@@ -98,8 +99,10 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
                         bearing= (int) L1.bearingTo(L2);
                         mEmily.rotation(bearing);
                     }
-                    mMap.addMarker(mEmily.position(coordinations.get(coordinations.size()-1)));
-                    trackingCor(coordinations,mMap);
+                    if(coordinations.size() > 1) {
+                        mMap.addMarker(mEmily.position(coordinations.get(coordinations.size() - 1)));
+                        trackingCor(coordinations, mMap);
+                    }
                     //
                 }else{
                     animateToHome = true;
@@ -143,7 +146,7 @@ public class FragmentMaps extends Fragment implements OnMapReadyCallback {
         //HomeLocation.
         HomeLocation = mMap.addMarker(new MarkerOptions().position(Mydata.getEmilyHomeLocation()).title("HOME"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Mydata.getEmilyLocation(),0));
-        zoom = 17;
+        zoom = 19;
         mTask.run();
 
     }
