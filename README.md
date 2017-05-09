@@ -6,9 +6,9 @@
 <p>Android application base directory contains java source code, layout xmls and manifest</p>
 <a href="./mockups">mockups</a>
 <p>mockup interface which we designed</p>
-<a href="./python_server.py">mockups</a>
+<a href="./python_server.py">python_server</a>
 <p>Server program to be run in Mission Planner</p>
-<a href="./test_python_client.py">mockups</a>
+<a href="./test_python_client.py">test_python_client</a>
 <p>A test python client program</p>
 
 
